@@ -11,5 +11,7 @@ class Consumption {
 }
 
 let consumptions = [
-    
+    new Consumption (2, "14/5", "Nike", 200),
+    new Consumption (1, "14/5", "Puma", 200),
+    new Consumption (3, "14/5", "Adidas", 200)
 ]

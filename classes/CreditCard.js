@@ -15,6 +15,6 @@ class CreditCard {
 
 let creditCards = [
     new CreditCard (1, "credito", "VISA", "09/28", 0, 0),
-    new CreditCard (2, "credito", "VISA", "09/28", 200, 25),
+    new CreditCard (1, "debito", "VISA", "09/28", 200, 25),
     new CreditCard (3, "debito", "American Express", "09/28", -200, 10)
 ]
