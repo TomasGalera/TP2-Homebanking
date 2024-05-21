@@ -10,8 +10,7 @@ class Client {
         this.caPesos = caPesos;
         this.limiteDescubierto = limit;
         this.deudaDescubierto = 0
-        this.cardNumber = debitCardNumber;
-        this.cardExpiration = debitCardExpiration;
+        this.cards = [{cardNumber: debitCardNumber, cardExpiration: debitCardExpiration}];
         if (habilitacion == "si"){
             this.habilitacion = true
             this.caDolares = caDolares;
