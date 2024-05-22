@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TP 2 - CarraBank - Cuentas bancarias</title>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </head>
+    <body class="container">
+        <header>                
+            <h4>TP2 - CarraBank - Cuentas bancarias</h4>
+            <h5>Ejercitación de Objetos y DOM en JavaScript</h5>
+            <h5>5to Informática 2024 - Colegio Pio IX. Profesores: Nicolás Facón y Matías Marchesi</h5>
+            <h4>Alumnos: INGRESE SUS NOMBRES AQUÍ</h4>
+            <br>
+        </header>
+        <main>
+            <!--Sección de login y registro-->
+            <section>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Bienvenido a CarraBank</h3>
+                    <div class="form-group">
+                        <!--Agregar el login-->
+                        <button class="form-check-control btn btn-primary">Ingresar</button>
+                    </div>
+                    <div class="form-group">
+                        <!--Agregar el resto de las etiquetas necesarias en el registro-->
+                        <button class="form-check-control btn btn-secondary">Registrarse</button>
+                    </div>
+                </div>
+            </section>
+            <!--Sección homebanking-->
+            <section>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Ingresar y extraer dinero</h3>
+                    <div class="form-group">     
+                        <!--Agregar el resto de las etiquetas necesarias-->
+                    </div>
+                    <div class="form-group">                
+                        <button class="form-check-control btn btn-primary">Ingresar</button>
+                        <button class="form-check-control btn btn-danger">Extraer</button>
+                    </div>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Compra / venta de dólares</h3>
+                    <div class="form-group">     
+                        <!--Agregar el resto de las etiquetas necesarias-->
+                    </div>
+                    <div class="form-group">                
+                        <button class="form-check-control btn btn-primary">Realizar operación</button>
+                    </div>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Máximos y mínimos</h3>
+                    <div class="form-group">                
+                        <button class="form-check-control btn btn-info">Obtener mayor</button>
+                        <button class="form-check-control btn btn-info">Obtener menor</button>
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Listados</h3>
+                    <div class="form-group">
+                        <button class="form-check-control btn btn-info">Listar clientes</button>
+                        <button class="form-check-control btn btn-success">Listar clientes CSV</button>
+                        <button class="form-check-control btn btn-danger">Listar morosos</button>
+                    </div>
+                    <table class="table">
+                    </table>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Busqueda de un cliente</h3>                    
+                    <div class="form-group">
+                        <label for="searchByContent">Buscar clientes por apellido o DNI</label>
+                        <input class="form-control" type="text">
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Realizar transferencia</h3>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="selectClienteOrigen">Cliente que envía el dinero </label>
+                            <select class="form-control" name="" id="">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="selectClienteDestino">Cliente que recibe el dinero </label>
+                            <select class="form-control" name="" id="">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="montoTransferencia">Monto a transferir ($) </label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="monedaTransferencia">Moneda</label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="radioPesos" name="radioMoneda" class="custom-control-input">
+                                <label class="custom-control-label" for="radioPesos">Pesos</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="radioDolares" name="radioMoneda" class="custom-control-input">
+                                <label class="custom-control-label" for="radioDolares">Dólares</label>
+                            </div>
+                        </div>
+                        <button class="form-check-control btn btn-success">Transferir</button>
+                    </div>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Añadir nuevo consumo de tarjeta</h3>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="selectClienteNuevoConsumo">Tarjeta que realizó el consumo </label>
+                            <select class="form-control" name="">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nuevoLocal">Nombre del local</label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="nuevoConsumo">Consumo realizado ($)</label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaConsumo">Fecha</label>
+                            <input class="form-control" type="date">
+                        </div>
+                        <button class="form-check-control btn btn-success">Añadir consumo</button>
+                    </div>
+                </div>
+                <div class="col-auto shadow p-3 mb-5 bg-white rounded">
+                    <h3>Pagar tarjeta</h3>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="selectClientePagoTarjeta">Tarjeta a abonar</label>
+                            <select class="form-control" name="" id="">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="montoPagarTarjeta">Monto a abonar ($)</label>
+                            <input class="form-control" type="text">
+                        </div>
+                        <button class="form-check-control btn btn-success">Pagar</button>
+                        <button class="form-check-control btn btn-info">Realizar pago total</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>
