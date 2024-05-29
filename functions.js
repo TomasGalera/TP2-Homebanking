@@ -33,6 +33,15 @@ function searchCreditCard(id){
     }
 }
 
+function searchCreditCardByClientId(clientId){
+    let clientCards = []
+    for (let i in creditCards){
+        if (creditCards[i].clientId === clientId){
+            clientCards.push(creditCards[i])
+        }
+    }
+    return clientCards
+}
 
 function searchConsumption(id){
     let i = 0
@@ -46,12 +55,21 @@ function searchConsumption(id){
     }
 }
 
-function searchCreditCardByClientId(clientId){
-    let clientCards = []
-    for (let i in creditCards){
-        if (creditCards[i].clientId === clientId){
-            clientCards.push(creditCards[i])
+function searchConsumptionByCardId(id){
+    let consumptionsByCardId = []
+    for (let i in consumptions){
+        if (consumptions[i].cardId === id){
+            consumptionsByCardId.push(consumptions[i])
         }
     }
-    return clientCards
+    return consumptionsByCardId
+}
+
+function addConsumption(cardId, local, amount, date){
+    let pos = searchCreditCard(cardId);
+    if (creditCards[pos].expiration < new Date()){
+        let consumo = new Consumption(cardId, date, local, amount)
+        consumptions.push(consumo)
+        creditCards[pos].saldo += amount
+    }
 }

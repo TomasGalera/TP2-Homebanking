@@ -1,23 +1,30 @@
 let clientId = 1
+const PRECIO_DOLAR = 1210
+let debitCardNumber = 4000123456789010
 
 class Client {
-    constructor(dni, password, clientName, clientSurname, caPesos, limit, debitCardNumber, debitCardExpiration, caDolares, habilitacion){
+    constructor(dni, password, clientName, clientSurname, limit, habilitacion){
         this.id = clientId;
         this.dni = dni;
         this.password = password;
         this.name = clientName;
         this.surname = clientSurname;
-        this.caPesos = caPesos;
+        this.caPesos = 0
         this.limiteDescubierto = limit;
         this.deudaDescubierto = 0
-        this.cards = [{cardNumber: debitCardNumber, cardExpiration: debitCardExpiration}];
+        
+        let currentDate = new Date();
+        this.debitCardNumber = debitCardNumber
+        this.cardExpiration = new Date(currentDate.getFullYear() + 3, currentDate.getMonth(), currentDate.getDate())
+        
         if (habilitacion == "si"){
             this.habilitacion = true
-            this.caDolares = caDolares;
+            this.caDolares = 0;
         } else {
             this.habilitacion = false
         }
         clientId++
+        debitCardNumber++
     }
     extraction (amount, CajaAhorro){
         if (CajaAhorro == "dolares" && this.caDolares>amount && this.habilitacion == true){
@@ -56,7 +63,7 @@ class Client {
                 return true
         } else {
             console.log("La caja de ahorros no existe")
-            return false
+            return -1
         }
     }
     cancelarDescubierto(amount){
@@ -75,6 +82,37 @@ class Client {
             console.log("No fue posible completar la operación")
         }
     }
+    compraVentaDolares(amount, ca){
+        if (ca === "dolar" && amount > 0){
+            let amountPesos = amount * PRECIO_DOLAR;
+            let extraccion = this.extraction(amount, "dolares")
+            if(extraccion === true){
+                let deposito = this.deposit(amountPesos, "pesos")
+                if (deposito === true){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
+        } else if (ca === "peso" && amount > 0){
+            let amountDolares = amount / PRECIO_DOLAR;
+            let extraccion = this.extraction(amount, "pesos")
+            if(extraccion === true){
+                let deposito = this.deposit(amountDolares, "dolares")
+                if (deposito === true){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
 }
 
 
@@ -86,4 +124,5 @@ let clients = [
 
 clients[0].extraction(6000, "pesos")
 clients[0].deposit(4000, "pesos")
+clients[0].deposit(4000, "dolares")
 clients[0].cancelarDescubierto(6000)
