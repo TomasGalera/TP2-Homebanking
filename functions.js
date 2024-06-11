@@ -1,11 +1,19 @@
-function transferencia(){
-    let senderId = searchClientById(2)
-    let reciverId = searchClientById(1)
+function transferencia(senderId, reciverId, amount, ca){
+    let senderPos = searchClientById(senderId)
+    let reciverPos = searchClientById(reciverId)
     let amount = document.getElementById("montoTransferencia").value
-    if (clients[senderId].caPesos >= amount && amount > 0) {
-        clients[senderId].caPesos -= amount
-        clients[reciverId].caPesos += amount
-        console.log(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderId].caPesos}`)
+    if (ca == "pesos"){
+        if (clients[senderPos].caPesos >= amount && amount > 0) {
+            clients[senderPos].caPesos -= amount
+            clients[reciverPos].caPesos += amount
+            console.log(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderPos].caPesos}`)
+        }
+    } else if (ca == "dolares"){
+        if (clients[senderPos].caDolares >= amount && amount > 0) {
+            clients[senderPos].caDolares -= amount
+            clients[reciverPos].caDolares += amount
+            console.log(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderPos].caDolares}`)
+        }
     }
 }
 
@@ -71,5 +79,9 @@ function addConsumption(cardId, local, amount, date){
         let consumo = new Consumption(cardId, date, local, amount)
         consumptions.push(consumo)
         creditCards[pos].saldo += amount
+        return true
+    } else {
+        return false
     }
 }
+

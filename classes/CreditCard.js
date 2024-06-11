@@ -12,6 +12,18 @@ class CreditCard {
         this.saldo = 0;
         this.interest = interest
     }
+    pagarSaldo(amount){
+        if (amount >= 0 && amount < saldo * 0.10){
+            this.saldo -= amount;
+            if (this.saldo === 0){
+                return 1
+            } else if (this.saldo > 0){
+                return 0
+            }
+        } else {
+            return -1
+        }
+    }
 }
 
 let creditCards = [
