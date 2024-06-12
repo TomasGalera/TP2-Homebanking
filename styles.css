@@ -1,0 +1,10 @@
+input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    accent-color: rgb(0, 191, 255);
+    margin: 0 100% 0 0;
+}
+
+label {
+    margin-top: 5px;
+}
