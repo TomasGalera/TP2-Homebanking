@@ -85,3 +85,6 @@ function addConsumption(cardId, local, amount, date){
     }
 }
 
+function login(){
+
+}

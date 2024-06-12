@@ -117,9 +117,9 @@ class Client {
 
 
 let clients = [
-    new Client (47944052, "hola", "Tomas", "Galera", 5000, 10000, 47, "04/12", 400, "si"),
-    new Client (47944052, "chau", "Nicolas", "Salles", 500000, 10000000, 87, "04/12", 400, "si"),
-    new Client (47944052, "a", "a", "a", 500000, 10000000, 74, "04/12", 400, "si")
+    new Client (47944052, "hola", "Tomas", "Galera", 5000, "si"),
+    new Client (47944052, "chau", "Nicolas", "Salles", 500000, "si"),
+    new Client (47944052, "a", "a", "a", 500000, "si")
 ]
 
 clients[0].extraction(6000, "pesos")

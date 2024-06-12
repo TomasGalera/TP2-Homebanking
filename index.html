@@ -19,21 +19,43 @@
         </header>
         <main>
             <!--Sección de login y registro-->
-            <section>
+            <section id="inicio">
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
                     <h3>Bienvenido a CarraBank</h3>
                     <div class="form-group">
                         <!--Agregar el login-->
-                        <button class="form-check-control btn btn-primary">Ingresar</button>
+                        <div class="form-group" id="login">
+                            <label for="username">Usuario</label>
+                            <input class="form-control" type="text" id="username">
+                            <label for="password">Contraseña</label>
+                            <input class="form-control" type="text" id="password">
+                        </div>
+                        <button class="form-check-control btn btn-primary" onclick="" id="botonIng">Ingresar</button>
                     </div>
                     <div class="form-group">
                         <!--Agregar el resto de las etiquetas necesarias en el registro-->
-                        <button class="form-check-control btn btn-secondary">Registrarse</button>
+                        <button class="form-check-control btn btn-danger" onclick="changeLogin()" id="botonReg">Quiero registrarme</button>
+                        <div class="form-group" id="register" style="display: none;">
+                            <label for="username">Usuario</label>
+                            <input class="form-control" type="text" id="username">
+                            <label for="apellido">Apellido</label>
+                            <input class="form-control" type="text" id="apellido">
+                            <label for="password">Contraseña</label>
+                            <input class="form-control" type="text" id="password">
+                            <label for="dni">DNI</label>
+                            <input class="form-control" type="number" id="dni">
+                            <label for="limite">Limite</label>
+                            <input class="form-control" type="number" id="limite">
+                            <label for="habilitacion">Habilitacion CA Dolares</label>
+                            <!-- Crear Clase Checkbox -->
+                            <input class=" " type="checkbox" id="habilitacion" style="margin-left: 10px;">
+                            <button class="form-check-control btn btn-danger" style="margin-top: 20px;">Registrarse</button>
+                        </div>
                     </div>
                 </div>
             </section>
             <!--Sección homebanking-->
-            <section>
+            <section id="banco" style="display: none">
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
                     <h3>Ingresar y extraer dinero</h3>
                     <div class="form-group">     
@@ -159,5 +181,10 @@
                 </div>
             </section>
         </main>
+        <script src="classes/Consumption.js"></script>
+        <script src="classes/Client.js"></script>
+        <script src="classes/CreditCard.js"></script>
+        <script src="dom.js"></script>
+        <script src="functions.js"></script>
     </body>
 </html>
