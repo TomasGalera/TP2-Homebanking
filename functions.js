@@ -1,7 +1,6 @@
 function transferencia(senderId, reciverId, amount, ca){
     let senderPos = searchClientById(senderId)
     let reciverPos = searchClientById(reciverId)
-    let amount = document.getElementById("montoTransferencia").value
     if (ca == "pesos"){
         if (clients[senderPos].caPesos >= amount && amount > 0) {
             clients[senderPos].caPesos -= amount
@@ -87,4 +86,13 @@ function addConsumption(cardId, local, amount, date){
 
 function login(){
 
+}
+
+
+function logout(){
+    changeScreen()
+    const register = document.getElementById("register");
+    if(register.style.display!== "none"){
+        changeLogin()
+    }
 }
