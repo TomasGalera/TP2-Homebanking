@@ -27,42 +27,42 @@ class Client {
         debitCardNumber++
     }
     extraction (amount, CajaAhorro){
-        if (CajaAhorro == "dolares" && this.caDolares>amount && this.habilitacion == true){
+        if (CajaAhorro == "dolares" && this.caDolares>= amount && this.habilitacion == true){
             this.caDolares -= amount;
-            console.log(`Dinero extraido de la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caDolares}`)
+            alert(`Dinero extraido de la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caDolares}`)
             return true
         } else if(CajaAhorro == "pesos"){
             if (this.caPesos>=amount){
                 this.caPesos -= amount;
-                console.log(`Dinero extraido de la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caPesos}`)
+                alert(`Dinero extraido de la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caPesos}`)
             } else {
                 let extraccion = (this.caPesos - amount)*-1;
                 this.caPesos = 0;
                 if (this.deudaDescubierto + extraccion <= this.limiteDescubierto){
                     this.deudaDescubierto += extraccion
-                    console.log(`Su saldo es de 0 y su deuda de descubierto es ${this.deudaDescubierto}`)
+                    alert(`Su saldo es de 0 y su deuda de descubierto es ${this.deudaDescubierto}`)
                     return true
                 } else {
-                    console.log("No es posible hacer la extracción");
+                    alert("No es posible hacer la extracción");
                     return false
                 }
             }
         } else {
-            console.log("La caja de ahorros no existe")
+            alert("La caja de ahorros no existe")
             return false
         }
     }
     deposit(amount, CajaAhorro){
         if (CajaAhorro == "dolares" && this.habilitacion == true){
             this.caDolares += amount;
-            console.log(`Dinero depositado en la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caDolares}`)
+            alert(`Dinero depositado en la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caDolares}`)
             return true
         } else if(CajaAhorro == "pesos"){
-                this.caPesos += amount;
-                console.log(`Dinero depositado en la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caPesos}`)
-                return true
+            this.caPesos += amount;
+            alert(`Dinero depositado en la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caPesos}`)
+            return true
         } else {
-            console.log("La caja de ahorros no existe")
+            alert("La caja de ahorros no existe")
             return -1
         }
     }
@@ -117,12 +117,11 @@ class Client {
 
 
 let clients = [
-    new Client (47944052, "hola", "Tomas", "Galera", 5000, "si"),
-    new Client (47944052, "chau", "Nicolas", "Salles", 500000, "si"),
-    new Client (47944052, "a", "a", "a", 500000, "si")
+    new Client (47944052, "hola", "Tomas", "Galera", 5000, true),
+    new Client (47944053, "chau", "Nicolas", "Salles", 500000, true),
+    new Client (47944054, "a", "a", "a", 500000, true)
 ]
 
-clients[0].extraction(6000, "pesos")
 clients[0].deposit(4000, "pesos")
 clients[0].deposit(4000, "dolares")
 clients[0].cancelarDescubierto(6000)

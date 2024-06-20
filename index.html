@@ -15,7 +15,7 @@
             <h4>TP2 - CarraBank - Cuentas bancarias</h4>
             <h5>Ejercitación de Objetos y DOM en JavaScript</h5>
             <h5>5to Informática 2024 - Colegio Pio IX. Profesores: Nicolás Facón y Matías Marchesi</h5>
-            <h4>Alumnos: INGRESE SUS NOMBRES AQUÍ</h4>
+            <h4>Alumnos: Tomás Galera y Nicolás Salles</h4>
             <br>
         </header>
         <main>
@@ -78,8 +78,8 @@
                           </div>
                     </div>
                     <div class="form-group">                
-                        <button class="form-check-control btn btn-primary">Ingresar</button>
-                        <button class="form-check-control btn btn-danger">Extraer</button>
+                        <button class="form-check-control btn btn-primary" onclick="deposit()">Ingresar</button>
+                        <button class="form-check-control btn btn-danger" onclick="extraction()">Extraer</button>
                     </div>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
@@ -94,11 +94,21 @@
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
                     <h3>Máximos y mínimos</h3>
                     <div class="form-group">                
-                        <button class="form-check-control btn btn-info">Obtener mayor</button>
+                        <button class="form-check-control btn btn-info" onclick="higherBalance()">Obtener mayor</button>
                         <button class="form-check-control btn btn-info">Obtener menor</button>
                     </div>
                     <div>
-                        
+                        <h4>Información de la cuenta</h4>
+                        <h5>Cliente solicitado:</h5>
+                        <ul>
+                            <li>DNI: <b id="bdni">-</b></li>
+                            <li>Apellido: <b id="bapellido">-</b></li>
+                            <li>Nombre: <b id="bnombre">-</b></li>
+                            <li>Saldo en cuenta pesos: <b id="bcp">-</b></li>
+                            <li>Saldo en cuenta dólares: <b id="bcd">-</b></li>
+                            <li>Saldo pendiente de pago en la tarjeta: <b id="bpt">-</b></li>
+                            <li>Ultimos consumos: <b id="buc">-</b></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">

@@ -1,3 +1,5 @@
+let resultado = []
+
 function transferencia(senderId, reciverId, ca){
     let senderPos = searchClientById(senderId)
     let reciverPos = searchClientById(reciverId)
@@ -92,8 +94,10 @@ function login(){
         i++
     }
     if (clients[i].dni == dni && clients[i].password === password){
+        resultado.push(Number(dni))
         alert("Se a logeado correctamente")
         changeScreen()
+        return resultado
     } else {
         alert("El dni o la contraseña es incorrecta")
     }
@@ -113,12 +117,14 @@ function register(){
     if (clients[i].dni != dni && dni != "" && password != "" && clientName != "" && clientSurname != "" && limite != ""){
         let newClient = new Client(dni, password, clientName, clientSurname, limite, habilitacion)
         clients.push(newClient)
+        resultado.push(Number(dni))
         alert("Cliente registrado correctamente")
         changeScreen()
+        return resultado
     } else {
         alert("No se a podido registrar correctamente")
+    }
 }
-
 
 function logout(){
     changeScreen()
@@ -126,4 +132,64 @@ function logout(){
     if(register.style.display!== "none"){
         changeLogin()
     }
+    resultado = []
+}
+
+function deposit() {
+    let amount = Number(document.getElementById("dinero").value);
+    let ca = document.getElementById("rpeso").checked;
+    let i = 0;
+    while (i < clients.length - 1 && clients[i].dni != resultado[0]){
+        i++
+    }
+    if (ca === true && amount > 0 && clients[i].dni === resultado[0]){
+        clients[i].deposit(amount, "pesos")
+    } else if (ca === false && amount > 0 && clients[i].dni === resultado[0]) {
+        clients[i].deposit(amount, "dolares")
+    } else {
+        alert("Se ha producido un error")
+    }
+}
+
+function extraction() {
+    let amount = Number(document.getElementById("dinero").value);
+    let ca = document.getElementById("rpeso").checked;
+    let i = 0;
+    while (i < clients.length - 1 && clients[i].dni != resultado[0]){
+        i++
+    }
+    if (ca === true && amount > 0 && clients[i].dni === resultado[0]){
+        clients[i].extraction(amount, "pesos")
+    } else if (ca === false && amount > 0 && clients[i].dni === resultado[0]) {
+        clients[i].extraction(amount, "dolares")
+    } else {
+        alert("Se ha producido un error")
+    }
+}
+
+function higherBalance(){
+    let higherClient = [0,0]
+    for (let i in clients){
+        if ((clients[i].caDolares * 1210 + clients[i].caPesos) > higherClient[0]) {
+            higherClient[0] = clients[i].caDolares * 1210 + clients[i].caPesos
+            higherClient[1] = i
+        }
+    }
+    let creditCardsById = searchCreditCardByClientId(clients[higherClient[1]].id)
+    let saldoRestanteTotal = 0
+    for (let i in creditCardsById){
+        saldoRestanteTotal += creditCardsById[i].saldo
+    }
+    higherClient.push(saldoRestanteTotal)
+    printHigher(higherClient)
+}
+
+function printHigher(higherClient){
+    document.getElementById("bdni").innerHTML = clients[higherClient[1]].dni
+    document.getElementById("bapellido").innerHTML = clients[higherClient[1]].surname
+    document.getElementById("bnombre").innerHTML = clients[higherClient[1]].name
+    document.getElementById("bcp").innerHTML = `$ ${clients[higherClient[1]].caPesos}`
+    document.getElementById("bcd").innerHTML = `U$S ${clients[higherClient[1]].caDolares}`
+    document.getElementById("bpt").innerHTML = `$ ${higherClient[2]}`
+    // document.getElementById("buc").innerHTML = clients[higherClient[1]].dni
 }
