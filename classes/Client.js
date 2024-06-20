@@ -17,7 +17,7 @@ class Client {
         this.debitCardNumber = debitCardNumber
         this.cardExpiration = new Date(currentDate.getFullYear() + 3, currentDate.getMonth(), currentDate.getDate())
         
-        if (habilitacion == "si"){
+        if (habilitacion == true){
             this.habilitacion = true
             this.caDolares = 0;
         } else {
