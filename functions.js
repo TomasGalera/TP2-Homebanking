@@ -1,4 +1,4 @@
-function transferencia(senderId, reciverId, amount, ca){
+function transferencia(senderId, reciverId, ca){
     let senderPos = searchClientById(senderId)
     let reciverPos = searchClientById(reciverId)
     let amount = document.getElementById("montoTransferencia").value
@@ -86,5 +86,37 @@ function addConsumption(cardId, local, amount, date){
 }
 
 function login(){
+    let dni = document.getElementById("dni").value
+    let password = document.getElementById("password").value
+    let i = 0
+    while (i < clients.length - 1 && clients[i].dni != dni){
+        i++
+    }
+    if (clients[i].dni == dni && clients[i].password === password){
+        alert("Se a logeado correctamente")
+        changeScreen()
+    } else {
+        alert("El dni o la contraseña es incorrecta")
+    }
+}
 
+function register(){
+    let dni = document.getElementById("dnir").value
+    let password = document.getElementById("passwordr").value
+    let clientName = document.getElementById("username").value
+    let clientSurname = document.getElementById("apellido").value
+    let limite = document.getElementById("limite").value
+    let habilitacion = document.getElementById("habilitacion").checked
+    let i = 0
+    while (i < clients.length - 1 && clients[i].dni != dni){
+        i++
+    }
+    if (clients[i].dni != dni && dni != "" && password != "" && clientName != "" && clientSurname != "" && limite != ""){
+        let newClient = new Client(dni, password, clientName, clientSurname, limite, habilitacion)
+        clients.push(newClient)
+        alert("Cliente registrado correctamente")
+        changeScreen()
+    } else {
+        alert("No se a podido registrar correctamente")
+    }
 }
