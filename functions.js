@@ -1,7 +1,6 @@
 function transferencia(senderId, reciverId, ca){
     let senderPos = searchClientById(senderId)
     let reciverPos = searchClientById(reciverId)
-    let amount = document.getElementById("montoTransferencia").value
     if (ca == "pesos"){
         if (clients[senderPos].caPesos >= amount && amount > 0) {
             clients[senderPos].caPesos -= amount
@@ -118,5 +117,13 @@ function register(){
         changeScreen()
     } else {
         alert("No se a podido registrar correctamente")
+}
+
+
+function logout(){
+    changeScreen()
+    const register = document.getElementById("register");
+    if(register.style.display!== "none"){
+        changeLogin()
     }
 }
