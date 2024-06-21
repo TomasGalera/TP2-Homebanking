@@ -124,4 +124,5 @@ let clients = [
 
 clients[0].deposit(4000, "pesos")
 clients[0].deposit(4000, "dolares")
+clients[2].deposit(10000, "dolares")
 clients[0].cancelarDescubierto(6000)

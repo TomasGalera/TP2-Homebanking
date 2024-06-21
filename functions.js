@@ -169,10 +169,11 @@ function extraction() {
 
 function higherBalance(){
     let higherClient = [0,0]
+    let clientConsumptions = []
     for (let i in clients){
         if ((clients[i].caDolares * 1210 + clients[i].caPesos) > higherClient[0]) {
-            higherClient[0] = clients[i].caDolares * 1210 + clients[i].caPesos
             higherClient[1] = i
+            higherClient[0] = clients[i].caDolares * 1210 + clients[i].caPesos
         }
     }
     let creditCardsById = searchCreditCardByClientId(clients[higherClient[1]].id)
@@ -181,15 +182,85 @@ function higherBalance(){
         saldoRestanteTotal += creditCardsById[i].saldo
     }
     higherClient.push(saldoRestanteTotal)
-    printHigher(higherClient)
+    for (let i in consumptions){
+        for (let x in creditCardsById){
+            if (creditCardsById[x].id === consumptions[i].cardId){
+                clientConsumptions.push(consumptions[i])
+            }
+        }
+    }
+    let ult3 = clientConsumptions.length - 3
+    let table = `<thead>
+                    <tr>
+                        <th scope="col">Local</th>
+                        <th scope="col">Consumo</th>
+                    </tr>
+                </thead>`
+    if (ult3 < 0) {
+        ult3 -= ult3
+    }
+    while (ult3 <= clientConsumptions.length - 1){
+        table += `<tr>
+                    <td>${clientConsumptions[ult3].nombreLocal}</td>
+                    <td>${clientConsumptions[ult3].monto}</td>
+                    </tr>`
+        ult3++
+    }
+    higherClient.push(table)
+    printHigherLower(higherClient)
 }
 
-function printHigher(higherClient){
+function printHigherLower(higherClient){
     document.getElementById("bdni").innerHTML = clients[higherClient[1]].dni
     document.getElementById("bapellido").innerHTML = clients[higherClient[1]].surname
     document.getElementById("bnombre").innerHTML = clients[higherClient[1]].name
     document.getElementById("bcp").innerHTML = `$ ${clients[higherClient[1]].caPesos}`
     document.getElementById("bcd").innerHTML = `U$S ${clients[higherClient[1]].caDolares}`
     document.getElementById("bpt").innerHTML = `$ ${higherClient[2]}`
-    // document.getElementById("buc").innerHTML = clients[higherClient[1]].dni
+    document.getElementById("buc").innerHTML = ""
+    document.getElementById("tmm").innerHTML = higherClient[3]
+}
+
+
+function lowerBalance(){
+    let higherClient = [clients[0].caDolares * 1210 + clients[0].caPesos, 0]
+    let clientConsumptions = []
+    for (let i in clients){
+        if ((clients[i].caDolares * 1210 + clients[i].caPesos) < higherClient[0] && clients[i].deudaDescubierto == 0) {
+            higherClient[1] = i
+            higherClient[0] = clients[i].caDolares * 1210 + clients[i].caPesos
+        }
+    }
+    let creditCardsById = searchCreditCardByClientId(clients[higherClient[1]].id)
+    let saldoRestanteTotal = 0
+    for (let i in creditCardsById){
+        saldoRestanteTotal += creditCardsById[i].saldo
+    }
+    higherClient.push(saldoRestanteTotal)
+    for (let i in consumptions){
+        for (let x in creditCardsById){
+            if (creditCardsById[x].id === consumptions[i].cardId){
+                clientConsumptions.push(consumptions[i])
+            }
+        }
+    }
+    let ult3 = clientConsumptions.length - 3
+    let table = `<thead>
+                    <tr>
+                        <th scope="col">Local</th>
+                        <th scope="col">Consumo</th>
+                    </tr>
+                </thead>`
+    if (ult3 < 0) {
+        ult3 -= ult3
+    }
+    while (ult3 <= clientConsumptions.length - 1){
+        table += `<tr>
+                    <td>${clientConsumptions[ult3].nombreLocal}</td>
+                    <td>${clientConsumptions[ult3].monto}</td>
+                    </tr>`
+        ult3++
+    }
+    higherClient.push(table)
+    printHigherLower(higherClient)
 }

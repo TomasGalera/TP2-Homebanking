@@ -7,6 +7,7 @@ class Consumption {
         this.date = date;
         this.nombreLocal = nombreLocal;
         this.monto = monto;
+        consumptionId++
     }
 }
 

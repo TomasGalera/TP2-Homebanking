@@ -95,7 +95,7 @@
                     <h3>Máximos y mínimos</h3>
                     <div class="form-group">                
                         <button class="form-check-control btn btn-info" onclick="higherBalance()">Obtener mayor</button>
-                        <button class="form-check-control btn btn-info">Obtener menor</button>
+                        <button class="form-check-control btn btn-info" onclick="lowerBalance()">Obtener menor</button>
                     </div>
                     <div>
                         <h4>Información de la cuenta</h4>
@@ -109,6 +109,7 @@
                             <li>Saldo pendiente de pago en la tarjeta: <b id="bpt">-</b></li>
                             <li>Ultimos consumos: <b id="buc">-</b></li>
                         </ul>
+                        <table class="table" id="tmm"></table>
                     </div>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">

@@ -11,6 +11,7 @@ class CreditCard {
         this.expiration = new Date(currentDate.getFullYear() + 3, currentDate.getMonth(), currentDate.getDate());
         this.saldo = 0;
         this.interest = interest
+        creditCardId++
     }
     pagarSaldo(amount){
         if (amount >= 0 && amount < saldo * 0.10){
