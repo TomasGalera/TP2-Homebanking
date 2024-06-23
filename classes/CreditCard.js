@@ -1,4 +1,5 @@
 let creditCardId = 1
+let numeroTarjetaCredito = 4502041831720840
 
 class CreditCard {
     constructor (clientId, proveedor, interest){
@@ -6,12 +7,13 @@ class CreditCard {
         this.clientId = clientId;
         this.type = "credito";
         this.proveedor = proveedor;
-        
+        this.numero = numeroTarjetaCredito
         let currentDate = new Date();
         this.expiration = new Date(currentDate.getFullYear() + 3, currentDate.getMonth(), currentDate.getDate());
         this.saldo = 0;
         this.interest = interest
         creditCardId++
+        numeroTarjetaCredito++
     }
     pagarSaldo(amount){
         if (amount >= 0 && amount < saldo * 0.10){

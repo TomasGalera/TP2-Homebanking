@@ -29,61 +29,58 @@ class Client {
     extraction (amount, CajaAhorro){
         if (CajaAhorro == "dolares" && this.caDolares>= amount && this.habilitacion == true){
             this.caDolares -= amount;
-            alert(`Dinero extraido de la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caDolares}`)
             return true
         } else if(CajaAhorro == "pesos"){
             if (this.caPesos>=amount){
                 this.caPesos -= amount;
-                alert(`Dinero extraido de la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caPesos}`)
+                return true
             } else {
                 let extraccion = (this.caPesos - amount)*-1;
                 this.caPesos = 0;
                 if (this.deudaDescubierto + extraccion <= this.limiteDescubierto){
                     this.deudaDescubierto += extraccion
-                    alert(`Su saldo es de 0 y su deuda de descubierto es ${this.deudaDescubierto}`)
-                    return true
+                    return 1
                 } else {
-                    alert("No es posible hacer la extracción");
                     return false
                 }
             }
         } else {
-            alert("La caja de ahorros no existe")
             return false
         }
     }
     deposit(amount, CajaAhorro){
         if (CajaAhorro == "dolares" && this.habilitacion == true){
             this.caDolares += amount;
-            alert(`Dinero depositado en la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caDolares}`)
             return true
         } else if(CajaAhorro == "pesos"){
             this.caPesos += amount;
-            alert(`Dinero depositado en la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${this.caPesos}`)
             return true
         } else {
-            alert("La caja de ahorros no existe")
             return -1
         }
     }
     cancelarDescubierto(amount){
-        if (amount<=this.caPesos && amount > 0){
+        if (amount<=this.caPesos && amount > 0 && this.deudaDescubierto > 0){
             let deuda = this.deudaDescubierto - amount
             if (deuda<0){
                 amount += deuda
-                console.log(`Depositaste más que tu deuda, se te debitó solo la parte que debías: ${amount}`)
+                document.getElementById("ptt").innerHTML = `Depositaste más que tu deuda, se te debitó solo la parte que debías: ${amount}`
             }
             this.caPesos-=amount;
             this.deudaDescubierto-=amount
-            console.log(`Descubierto cancelado, su saldo es de: ${this.caPesos}`)
-        } else if (amount>=this.caPesos){
-            console.log("No tenes ese dinero en tu caja de ahorros")
+            if (this.deudaDescubierto === 0){
+                document.getElementById("ptt").innerHTML = `Saldaste tu deuda`
+            } else {
+                document.getElementById("ptt").innerHTML = `Se a realizado un pago total de la tarjeta`
+            }
+        } else if (amount>=this.caPesos && this.deudaDescubierto > 0){
+            document.getElementById("ptt").innerHTML = "No tenes ese dinero en tu caja de ahorros"
         } else {
-            console.log("No fue posible completar la operación")
+            document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
         }
     }
     compraVentaDolares(amount, ca){
-        if (ca === "dolar" && amount > 0){
+        if (ca === 1 && amount > 0){
             let amountPesos = amount * PRECIO_DOLAR;
             let extraccion = this.extraction(amount, "dolares")
             if(extraccion === true){
@@ -96,18 +93,22 @@ class Client {
             } else {
                 return false
             }
-        } else if (ca === "peso" && amount > 0){
-            let amountDolares = amount / PRECIO_DOLAR;
-            let extraccion = this.extraction(amount, "pesos")
-            if(extraccion === true){
-                let deposito = this.deposit(amountDolares, "dolares")
-                if (deposito === true){
-                    return true
+        } else if (ca === 2 && amount > 0){
+            let amountPesos = amount * PRECIO_DOLAR;
+            if (amountPesos <= this.caPesos){
+                let extraccion = this.extraction(amountPesos, "pesos")
+                if(extraccion === true){
+                    let deposito = this.deposit(amount, "dolares")
+                    if (deposito === true){
+                        return true
+                    } else {
+                        return false
+                    }
                 } else {
                     return false
                 }
             } else {
-                return false
+                return -1
             }
         } else {
             return false
@@ -125,4 +126,3 @@ let clients = [
 clients[0].deposit(4000, "pesos")
 clients[0].deposit(4000, "dolares")
 clients[2].deposit(10000, "dolares")
-clients[0].cancelarDescubierto(6000)

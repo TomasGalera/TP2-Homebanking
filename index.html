@@ -75,7 +75,7 @@
                             <label class="form-check-label" for="rdolar" style="margin: 0;">
                               Dolares
                             </label>
-                          </div>
+                        </div>
                     </div>
                     <div class="form-group">                
                         <button class="form-check-control btn btn-primary" onclick="deposit()">Ingresar</button>
@@ -86,9 +86,17 @@
                     <h3>Compra / venta de dólares</h3>
                     <div class="form-group">     
                         <!--Agregar el resto de las etiquetas necesarias-->
+                        <label for="compraventa">Acción</label>
+                        <select class="form-control" name="compraventa" id="compraventa">
+                            <option value="2">Comprar</option>
+                            <option value="1">Vender</option>
+                        </select>
+                        <label for="icompvent">Cantidad</label>
+                        <input class="form-control" type="text" id="icompvent">
+                        <h5 id="h5compvent"></h5>
                     </div>
                     <div class="form-group">                
-                        <button class="form-check-control btn btn-primary">Realizar operación</button>
+                        <button class="form-check-control btn btn-primary" onclick="compraVentaDolares()">Realizar operación</button>
                     </div>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
@@ -115,18 +123,19 @@
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
                     <h3>Listados</h3>
                     <div class="form-group">
-                        <button class="form-check-control btn btn-info">Listar clientes</button>
-                        <button class="form-check-control btn btn-success">Listar clientes CSV</button>
-                        <button class="form-check-control btn btn-danger">Listar morosos</button>
+                        <button class="form-check-control btn btn-info" onclick="clientList()">Listar clientes</button>
+                        <button class="form-check-control btn btn-success" onclick="dniCsv()">Listar clientes CSV</button>
+                        <button class="form-check-control btn btn-danger" onclick="morososList()">Listar morosos</button>
                     </div>
-                    <table class="table">
-                    </table>
+                    <table class="table" style="display: none;" id="tlistadoc"></table>
+                    <table class="table" style="display: none;" id="tlistadom"></table>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
                     <h3>Busqueda de un cliente</h3>                    
                     <div class="form-group">
                         <label for="searchByContent">Buscar clientes por apellido o DNI</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" id="busqueda" onkeyup="searchClientByDniOrSurname()">
+                        <table class="table" id="tbusqueda"></table>
                     </div>
                     <div>
 
@@ -137,24 +146,23 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label for="selectClienteOrigen">Cliente que envía el dinero </label>
-                            <select class="form-control" name="" id="">
-                                <option value=""></option>
+                            <select class="form-control" name="transferencia" id="tenvia">
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="selectClienteDestino">Cliente que recibe el dinero </label>
-                            <select class="form-control" name="" id="">
+                            <select class="form-control" name="transferencia" id="trecibe">
                                 <option value=""></option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="montoTransferencia">Monto a transferir ($) </label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="amountT">
                         </div>
                         <div class="form-group">
                             <label for="monedaTransferencia">Moneda</label>
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="radioPesos" name="radioMoneda" class="custom-control-input">
+                                <input type="radio" id="radioPesos" name="radioMoneda" class="custom-control-input" checked>
                                 <label class="custom-control-label" for="radioPesos">Pesos</label>
                             </div>
                             <div class="custom-control custom-radio">
@@ -162,7 +170,7 @@
                                 <label class="custom-control-label" for="radioDolares">Dólares</label>
                             </div>
                         </div>
-                        <button class="form-check-control btn btn-success">Transferir</button>
+                        <button class="form-check-control btn btn-success" onclick="transferenciaInfo()">Transferir</button>
                     </div>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded">
@@ -170,23 +178,21 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label for="selectClienteNuevoConsumo">Tarjeta que realizó el consumo </label>
-                            <select class="form-control" name="">
-                                <option value=""></option>
-                            </select>
+                            <select class="form-control" id="nc"></select>
                         </div>
                         <div class="form-group">
                             <label for="nuevoLocal">Nombre del local</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="ncl">
                         </div>
                         <div class="form-group">
                             <label for="nuevoConsumo">Consumo realizado ($)</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="nca">
                         </div>
                         <div class="form-group">
                             <label for="fechaConsumo">Fecha</label>
-                            <input class="form-control" type="date">
+                            <input class="form-control" type="date" id="ncd">
                         </div>
-                        <button class="form-check-control btn btn-success">Añadir consumo</button>
+                        <button class="form-check-control btn btn-success" onclick="consumptionInfo()">Añadir consumo</button>
                     </div>
                 </div>
                 <div class="col-auto shadow p-3 mb-5 bg-white rounded" style="margin: 0 0 20px 0;">
@@ -194,16 +200,17 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label for="selectClientePagoTarjeta">Tarjeta a abonar</label>
-                            <select class="form-control" name="" id="">
+                            <select class="form-control" id="pg">
                                 <option value=""></option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="montoPagarTarjeta">Monto a abonar ($)</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="pcc">
+                            <h5 id="ptt"></h5>
                         </div>
-                        <button class="form-check-control btn btn-success">Pagar</button>
-                        <button class="form-check-control btn btn-info">Realizar pago total</button>
+                        <button class="form-check-control btn btn-success" onclick="payCreditCard()">Pagar</button>
+                        <button class="form-check-control btn btn-info" onclick="payTotalCreditCard()">Realizar pago total</button>
                     </div>
                 </div>
                 <button class="form-check-control btn btn-danger" onclick="logout()" style="margin-bottom: 20px;">Logout</button>
