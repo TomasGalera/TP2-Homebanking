@@ -4,7 +4,7 @@ function transferencia(senderId, reciverId, amount, ca){
     let senderPos = searchClientById(senderId)
     let reciverPos = searchClientById(reciverId)
     if (ca == true){
-        if (clients[senderPos].caPesos >= amount && amount > 0) {
+        if (clients[senderPos].caPesos >= amount && amount > 0 && clients[reciverPos].habilitacion === true) {
             clients[senderPos].caPesos -= amount
             clients[reciverPos].caPesos += amount
             alert(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderPos].caPesos}`)
@@ -12,7 +12,7 @@ function transferencia(senderId, reciverId, amount, ca){
             alert(`No tiene ese dinero en su cuenta de pesos, ingrese un monto correcto`)
         }
     } else if (ca == false){
-        if (clients[senderPos].caDolares >= amount && amount > 0) {
+        if (clients[senderPos].caDolares >= amount && amount > 0 && clients[reciverPos].habilitacion === true) {
             clients[senderPos].caDolares -= amount
             clients[reciverPos].caDolares += amount
             alert(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderPos].caDolares}`)
@@ -24,7 +24,7 @@ function transferencia(senderId, reciverId, amount, ca){
 
 function searchClientById(id){
     let i = 0
-    while (i < clients.length - 1 && id != clients[i].id){
+    while (i < clients.length && id != clients[i].id){
         i++
     }
     if (clients[i].id === id){
@@ -37,7 +37,7 @@ function searchClientById(id){
 function searchCurrentClientByDni(){
     let currentUser = resultado[0]
     let i = 0
-    while (i < clients.length - 1 && clients[i].dni !== currentUser){
+    while (i < clients.length && clients[i].dni !== currentUser){
         i++
     }
     if (clients[i].dni === currentUser){
@@ -49,7 +49,7 @@ function searchCurrentClientByDni(){
 
 function searchCreditCard(id){
     let i = 0
-    while (i < creditCards.length - 1 && id != creditCards[i].id){
+    while (i < creditCards.length && id != creditCards[i].id){
         i++
     }
     if (creditCards[i].id === id){
@@ -71,7 +71,7 @@ function searchCreditCardByClientId(clientId){
 
 function searchConsumption(id){
     let i = 0
-    while (i < consumptions.length - 1 && consumptions[i].id != id){
+    while (i < consumptions.length && consumptions[i].id != id){
         i++
     }
     if (consumptions[i].id === id){
@@ -157,8 +157,20 @@ function logout(){
     const register = document.getElementById("register");
     if(register.style.display!== "none"){
         changeLogin()
+        document.getElementById("dnir").value = ""
+        document.getElementById("passwordr").value = ""
+        document.getElementById("username").value = ""
+        document.getElementById("apellido").value = ""
+        document.getElementById("limite").value = ""
+        document.getElementById("habilitacion").checked = false
     }
     resultado = []
+    document.getElementById("dni").value = ""
+    document.getElementById("password").value = ""
+    document.getElementById("tenvia").innerHTML = infoSelects[0]
+    document.getElementById("trecibe").innerHTML = infoSelects[1]
+    document.getElementById("nc").innerHTML = infoSelects[2]
+    document.getElementById("pg").innerHTML = infoSelects[2]
 }
 
 function deposit() {
@@ -468,10 +480,22 @@ function consumptionInfo(){
 
 function payCreditCard(){
     let amount = document.getElementById("pcc").value
+    let idTarjeta = document.getElementById("pg").value
+    idTarjeta = Number(idTarjeta)
+    let posTarjeta = searchCreditCard(idTarjeta)
     let currentClient = searchCurrentClientByDni()
-    if (amount !== ''){
+    if (amount !== '' && clients[currentClient].caPesos >= Number(amount)){
         amount = Number(document.getElementById("pcc").value)
-        clients[currentClient].cancelarDescubierto(amount)
+        let pagarTarjeta = creditCards[posTarjeta].pagarSaldo(amount)
+        if (pagarTarjeta === 1){
+            document.getElementById("ptt").innerHTML = `Se a realizado un pago total de la tarjeta, su saldo es de $${creditCards[posTarjeta].saldo}`
+            clients[currentClient].caPesos -= amount
+        } else if(pagarTarjeta === 0){
+            document.getElementById("ptt").innerHTML = `Te falta pagar $${creditCards[posTarjeta].saldo}`
+            clients[currentClient].caPesos -= amount
+        } else {
+            document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
+        }
     } else {
         document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
     }
@@ -479,11 +503,19 @@ function payCreditCard(){
 
 function payTotalCreditCard(){
     let amount = document.getElementById("pcc").value
+    let idTarjeta = document.getElementById("pg").value
+    idTarjeta = Number(idTarjeta)
+    let posTarjeta = searchCreditCard(idTarjeta)
     let currentClient = searchCurrentClientByDni()
-    if (amount !== '' && Number(amount) === clients[currentClient].deudaDescubierto){
+    if (amount !== '' && Number(amount) === creditCards[posTarjeta].saldo && clients[currentClient].caPesos > Number(amount)){
         amount = Number(document.getElementById("pcc").value)
-        clients[currentClient].cancelarDescubierto(amount)
-        document.getElementById("ptt").innerHTML = "Se a realizado un pago total de la tarjeta"
+        let pagarTarjeta = creditCards[posTarjeta].pagarSaldo(amount)
+        if (pagarTarjeta === 1){
+            clients[currentClient].caPesos -= amount
+            document.getElementById("ptt").innerHTML = `Se a realizado un pago total de la tarjeta, su saldo es de $${creditCards[posTarjeta].saldo}`
+        } else {
+            document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
+        }
     } else {
         document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
     }

@@ -16,7 +16,7 @@ class CreditCard {
         numeroTarjetaCredito++
     }
     pagarSaldo(amount){
-        if (amount >= 0 && amount < saldo * 0.10){
+        if (amount >= 0 && amount > this.saldo * 0.10){
             this.saldo -= amount;
             if (this.saldo === 0){
                 return 1
