@@ -1,5 +1,9 @@
 let resultado = []
 
+guardarLocalStorage()
+clients = obtenerLocalStorageClients()
+// localStorage.clear();
+
 function transferencia(senderId, reciverId, amount, ca){
     let senderPos = searchClientById(senderId)
     let reciverPos = searchClientById(reciverId)
@@ -8,6 +12,7 @@ function transferencia(senderId, reciverId, amount, ca){
             clients[senderPos].caPesos -= amount
             clients[reciverPos].caPesos += amount
             alert(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderPos].caPesos}`)
+            guardarLocalStorage("client")
         } else {
             alert(`No tiene ese dinero en su cuenta de pesos, ingrese un monto correcto`)
         }
@@ -16,6 +21,7 @@ function transferencia(senderId, reciverId, amount, ca){
             clients[senderPos].caDolares -= amount
             clients[reciverPos].caDolares += amount
             alert(`La transferencia se ha realizado con exito, su nuevo saldo es de: ${clients[senderPos].caDolares}`)
+            guardarLocalStorage("client")
         } else {
             alert(`No tiene ese dinero en su cuenta de dolares, ingrese un monto correcto`)
         }
@@ -98,6 +104,10 @@ function addConsumption(cardId, local, amount, date){
             let consumo = new Consumption(cardId, date, local, amount)
             consumptions.push(consumo)
             creditCards[pos].saldo += amount
+            guardarLocalStorage("consumption")
+            guardarLocalStorage("creditcard")
+            creditCards = obtenerLocalStorageCreditCards()
+            consumptions = obtenerLocalStorageConsumptions()
             alert("Nuevo consumo agragado")
             return true
         } else {
@@ -146,6 +156,7 @@ function register(){
         alert("Cliente registrado correctamente")
         changeScreen()
         llenarSelect()
+        guardarLocalStorage("client")
         return resultado
     } else {
         alert("No se a podido registrar correctamente")
@@ -184,6 +195,7 @@ function deposit() {
         let result = clients[i].deposit(amount, "pesos")
         if (result === true){
             alert(`Dinero depositado en la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${clients[i].caPesos}`)
+            guardarLocalStorage("client")
         } else {
             alert("La caja de ahorros no existe")
         }
@@ -191,6 +203,7 @@ function deposit() {
         let result = clients[i].deposit(amount, "dolares")
         if (result === true){
             alert(`Dinero depositado en la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${clients[i].caDolares}`)
+            guardarLocalStorage("client")
         }  else {
             alert("La caja de ahorros no existe")
         }
@@ -212,13 +225,16 @@ function extraction() {
             alert("No es posible hacer la extracción");
         } else if (result === 1){
             alert(`Su saldo es de 0 y su deuda de descubierto es ${clients[i].deudaDescubierto}`)
+            guardarLocalStorage("client")
         } else {
             alert(`Dinero extraido de la caja de ahorro en pesos por un monto de: ${amount} \nSu nuevo saldo es de: ${clients[i].caPesos}`)
+            guardarLocalStorage("client")
         }
     } else if (ca === false && amount > 0 && clients[i].dni === resultado[0]) {
         let result = clients[i].extraction(amount, "dolares")
         if (result === true){
             alert(`Dinero extraido de la caja de ahorro en dolares por un monto de: ${amount} \nSu nuevo saldo es de: ${clients[i].caDolares}`)
+            guardarLocalStorage("client")
         } else {
             alert("No es posible hacer la extracción");
         }
@@ -490,9 +506,15 @@ function payCreditCard(){
         if (pagarTarjeta === 1){
             document.getElementById("ptt").innerHTML = `Se a realizado un pago total de la tarjeta, su saldo es de $${creditCards[posTarjeta].saldo}`
             clients[currentClient].caPesos -= amount
+            guardarLocalStorage("client")
+            guardarLocalStorage("creditcard")
+            creditCards = obtenerLocalStorageCreditCards()
         } else if(pagarTarjeta === 0){
             document.getElementById("ptt").innerHTML = `Te falta pagar $${creditCards[posTarjeta].saldo}`
             clients[currentClient].caPesos -= amount
+            guardarLocalStorage("client")
+            guardarLocalStorage("creditcard")
+            creditCards = obtenerLocalStorageCreditCards()
         } else {
             document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
         }
@@ -513,6 +535,9 @@ function payTotalCreditCard(){
         if (pagarTarjeta === 1){
             clients[currentClient].caPesos -= amount
             document.getElementById("ptt").innerHTML = `Se a realizado un pago total de la tarjeta, su saldo es de $${creditCards[posTarjeta].saldo}`
+            guardarLocalStorage("client")
+            guardarLocalStorage("creditcard")
+            creditCards = obtenerLocalStorageCreditCards()
         } else {
             document.getElementById("ptt").innerHTML = "No fue posible completar la operación"
         }
@@ -531,6 +556,7 @@ function compraVentaDolares(){
         let movement = clients[currentClient].compraVentaDolares(amount, option)
         if (movement === true){
             document.getElementById("h5compvent").innerHTML = (`La compra se ha realizado con exito<br>Su nuevo saldo en sus cuentas es:<br>$ ${clients[currentClient].caPesos}<br>U$S ${clients[currentClient].caDolares}`)
+            guardarLocalStorage("client")
         } else  {
             document.getElementById("h5compvent").innerHTML = (`Ocurrio un error al momento de efectuar la compra`)
         }
@@ -539,10 +565,59 @@ function compraVentaDolares(){
         let movement = clients[currentClient].compraVentaDolares(amount, option)
         if (movement === true){
             document.getElementById("h5compvent").innerHTML = (`La venta se ha realizado con exito<br>Su nuevo saldo en sus cuentas es:<br>$ ${clients[currentClient].caPesos}<br>U$S ${clients[currentClient].caDolares}`)
+            guardarLocalStorage("client")
         } else if (movement === -1){
             document.getElementById("h5compvent").innerHTML = (`Saldo insuficiente`)
         } else {
             document.getElementById("h5compvent").innerHTML = (`Ocurrio un error al momento de efectuar la venta`)
         }
+    }
+}
+
+
+//MARK: Local Storage
+function guardarLocalStorage(boton){
+    if (localStorage.getItem("cargado") === null){
+        localStorage.setItem("cargado", "si")
+        localStorage.setItem("Client",  JSON.stringify(clients))
+        localStorage.setItem("Consumption",  JSON.stringify(consumptions))
+        localStorage.setItem("CreditCard",  JSON.stringify(creditCards))
+    } else if (localStorage.getItem("cargado") === "si" && boton === "client"){
+        localStorage.setItem("Client",  JSON.stringify(clients))
+    } else if (localStorage.getItem("cargado") === "si" && boton === "consumption"){
+        localStorage.setItem("Consumption",  JSON.stringify(consumptions))
+    } else if (localStorage.getItem("cargado") === "si" && boton === "creditcard"){
+        localStorage.setItem("CreditCard",  JSON.stringify(creditCards))
+    }
+}
+
+function obtenerLocalStorageClients(){
+    if (localStorage.getItem("Client")){
+        let clientsLS = JSON.parse(localStorage.getItem("Client"));
+        clients = []
+        for (let i in clientsLS){
+            let NewClient = new Client(clientsLS[i].dni, clientsLS[i].password, clientsLS[i].name, clientsLS[i].surname, clientsLS[i].limiteDescubierto, clientsLS[i].habilitacion)
+            clients.push(NewClient)
+            clients[i].caPesos = clientsLS[i].caPesos
+            if (clientsLS[i].habilitacion === true){
+                clients[i].caDolares = clientsLS[i].caDolares
+            }
+            clients[i].deudaDescubierto = clientsLS[i].deudaDescubierto
+        }
+        return clientsLS
+    }
+}
+
+function obtenerLocalStorageCreditCards(){
+    if (localStorage.getItem("CreditCard")){
+        let creditcardsLS = JSON.parse(localStorage.getItem("CreditCard"));
+        return creditcardsLS
+    }
+}
+
+function obtenerLocalStorageConsumptions(){
+    if (localStorage.getItem("Consumption")){
+        let consumptionsLS = JSON.parse(localStorage.getItem("Consumption"));
+        return consumptionsLS
     }
 }
